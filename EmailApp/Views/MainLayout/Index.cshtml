@@ -1,0 +1,172 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mailbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/fontawesome-free/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/dist/css/adminlte.min.css">
+    <style>
+        /* Özel CSS */
+        body {
+            background: #f4f6f9;
+        }
+        .main-header {
+            background: linear-gradient(90deg, #007bff, #6610f2);
+            color: #fff !important;
+        }
+        .main-header .nav-link, .main-header i {
+            color: #fff !important;
+        }
+        .btn-compose {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .card-header {
+            border-left: 4px solid #007bff;
+        }
+        .nav-pills .nav-link {
+            font-weight: 500;
+        }
+        .nav-pills .nav-link i {
+            margin-right: 8px;
+        }
+        .badge {
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-dark">
+            <ul class="navbar-nav ml-auto">
+                <!-- Mesajlar -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-envelope"></i>
+                        <span class="badge badge-danger navbar-badge">@(ViewBag.unreadCount ?? 0)</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        @if (ViewBag.RecentMessages != null)
+                        {
+                            @foreach (var message in ViewBag.RecentMessages)
+                            {
+                                <a href="/Message/MessageDetail/@message.MessageId" class="dropdown-item">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <h3 class="dropdown-item-title">
+                                                @(message.Sender?.FirstName ?? "Unknown") @(message.Sender?.LastName ?? "")
+                                                <span class="float-right text-sm text-warning">
+                                                    <i class="fas fa-star @(message.IsImportant ? "" : "far")"></i>
+                                                </span>
+                                            </h3>
+                                            <p class="text-sm">@message.Subject</p>
+                                            <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @message.SendDate.ToString("HH:mm")</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            }
+                        }
+                        <a href="/Message/Index" class="dropdown-item dropdown-footer">Tüm Mesajları Gör</a>
+                    </div>
+                </li>
+                <!-- Kullanıcı -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fas fa-user-circle"></i> @ViewBag.UserFirstName @ViewBag.UserLastName
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="/Login/Logout" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt mr-2 text-danger"></i> Çıkış Yap
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Content Wrapper -->
+        <div class="content-wrapper p-3">
+            <section class="content">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-md-3">
+                        <a href="/Message/SendMessage" class="btn btn-primary btn-block mb-3 btn-compose">
+                            <i class="fas fa-plus"></i> Yeni Mail Gönder
+                        </a>
+
+                        <!-- Dosyalar -->
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h3 class="card-title text-primary"><i class="fas fa-folder-open"></i> Dosyalar</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="nav nav-pills flex-column">
+                                    <li class="nav-item">
+                                        <a href="/Message/Index" class="nav-link">
+                                            <i class="fas fa-inbox text-primary"></i> Gelen Kutusu
+                                            <span class="badge badge-primary float-right">@(ViewBag.unreadCount ?? 0)</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Message/SentMessages" class="nav-link">
+                                            <i class="fas fa-paper-plane text-success"></i> Giden Kutusu
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Message/Drafts" class="nav-link">
+                                            <i class="fas fa-file-alt text-warning"></i> Taslaklar
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Message/Trash" class="nav-link">
+                                            <i class="fas fa-trash text-danger"></i> Çöp Kutusu
+                                            <span class="badge badge-danger float-right">@(ViewBag.trashCount ?? 0)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Etiketler -->
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h3 class="card-title text-warning"><i class="fas fa-tags"></i> Etiketler</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="nav nav-pills flex-column">
+                                    <li class="nav-item">
+                                        <a href="/Message/ImportantMessages" class="nav-link">
+                                            <i class="fas fa-star text-warning"></i> Önemli Mesajlar
+                                            <span class="badge badge-warning float-right">@(ViewBag.importantCount ?? 0)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- İçerik -->
+                    <div class="col-md-9">
+                        @RenderBody()
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery/jquery.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/dist/js/adminlte.min.js"></script>
+</body>
+</html>

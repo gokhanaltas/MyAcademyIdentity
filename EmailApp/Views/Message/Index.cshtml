@@ -1,0 +1,88 @@
+﻿@model List<Message>
+@{
+    Layout = "~/Views/MainLayout/Index.cshtml";
+    ViewData["Title"] = "Index";
+    int count = 0;
+}
+
+<div class="col-md-15">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Gelen Mesaj</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <div class="mailbox-controls"></div>
+            <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="mailbox-star">
+                                    @if (item.IsImportant)
+                                    {
+                                        <a href="/Message/MarkAsNotImportant/@item.MessageId" title="Remove from Important">
+                                            <i class="fas fa-star text-warning"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Message/MarkAsImportant/@item.MessageId" title="Mark as Important">
+                                            <i class="far fa-star text-warning"></i>
+                                        </a>
+                                    }
+                                </td>
+                                <td class="mailbox-name"><a href="/Message/MessageDetail/@item.MessageId">@item.Sender.FirstName @item.Sender.LastName</a></td>
+                                <td class="mailbox-subject">
+                                    <b>@item.Subject</b>
+                                </td>
+                                <td class="mailbox-attachment"></td>
+                                <td class="mailbox-date">@item.SendDate.ToShortDateString()</td>
+
+                                @if (@item.IsRead == true)
+                                {
+                                    <td>
+                                        <a href="/Message/MarkAsUnread/@item.MessageId" class="btn" style="background-color:#28a745; color:white; border:none;">Okundu</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a href="/Message/MarkAsRead/@item.MessageId" class="btn" style="background-color:#ff8800; color:white; border:none;">Okunmadı</a>
+                                    </td>
+                                }
+
+                                <td>
+                                    <a href="/Message/DeleteMessage/@item.MessageId" class="btn" style="background-color:#dc3545; color:white; border:none;">Sil</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer p-0">
+            <div class="mailbox-controls">
+                <div class="float-right">
+                    @{
+                        int startItem2 = ((ViewBag.CurrentPage - 1) * 5) + 1;
+                        int endItem2 = Math.Min(ViewBag.CurrentPage * 5, ViewBag.TotalMessages);
+                    }
+                    @startItem2-@endItem2/@ViewBag.TotalMessages
+                    <div class="btn-group">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <a href="/Message/Index?page=@(ViewBag.CurrentPage - 1)" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></a>
+                        }
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <a href="/Message/Index?page=@(ViewBag.CurrentPage + 1)" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

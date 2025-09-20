@@ -1,0 +1,74 @@
+﻿@model List<Message>
+
+@{
+    Layout = "~/Views/MainLayout/Index.cshtml";
+    ViewData["Title"] = "Drafts";
+}
+
+<div class="col-md-15">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Taslaklar</h3>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th>Konu</th>
+                            <th>Tarih</th>
+                            <th>Düzenle</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int count = ((ViewBag.CurrentPage - 1) * 5) + 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><strong>@count.</strong></td>
+                                <td class="mailbox-subject">
+                                    <b>@item.Subject</b>
+                                </td>
+                                <td class="mailbox-date">@item.DraftDate?.ToShortDateString()</td>
+                                <td>
+                                    <a href="/Message/EditDraft/@item.MessageId" class="btn btn-primary" style="background: linear-gradient(90deg, #007bff, #6610f2); border:none; color:#fff;">Düzenle</a>
+                                </td>
+                                <td>
+                                    <a href="/Message/DeleteDraft/@item.MessageId" class="btn btn-danger" style="background: linear-gradient(90deg, #ff4d4f, #d9363e); border:none; color:#fff;" onclick="return confirm('Are you sure you want to delete this draft?')">Sil</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer p-0">
+            <div class="mailbox-controls">
+                <div class="float-right">
+                    @{
+                        int startItem = ((ViewBag.CurrentPage - 1) * 5) + 1;
+                        int endItem = Math.Min(ViewBag.CurrentPage * 5, ViewBag.TotalMessages);
+                    }
+                    @startItem-@endItem / @ViewBag.TotalMessages
+                    <div class="btn-group">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <a href="/Message/Drafts?page=@(ViewBag.CurrentPage - 1)" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></a>
+                        }
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <a href="/Message/Drafts?page=@(ViewBag.CurrentPage + 1)" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

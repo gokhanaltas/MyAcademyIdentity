@@ -1,0 +1,55 @@
+﻿@model Message
+@{
+    ViewData["Title"] = "MessageDetail";
+    Layout = "~/Views/MainLayout/Index.cshtml";
+
+}
+
+<div class="col-md-9">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Mail Detayı</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <div class="mailbox-read-info">
+                <h5>@Model.Subject</h5>
+                <h6>
+                    From: @Model.Sender.Email
+                    <span class="mailbox-read-time float-right">@Model.SendDate</span>
+                </h6>
+            </div>
+            <!-- /.mailbox-read-info -->
+            <div class="mailbox-controls with-border text-center">
+
+                <!-- /.btn-group -->
+
+            </div>
+            <!-- /.mailbox-controls -->
+            <div class="mailbox-read-message">
+
+
+                <p>
+                    @Model.Body
+                </p>
+            </div>
+            <!-- /.mailbox-read-message -->
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer bg-white">
+            <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+            </ul>
+        </div>
+        <!-- /.card-footer -->
+        <div class="card-footer">
+            <div class="float-right">
+                <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Cevapla</button>
+                <button type="button" class="btn btn-default"><i class="fas fa-share"></i> İlerle</button>
+            </div>
+            <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Sil</button>
+        </div>
+        <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+</div>
