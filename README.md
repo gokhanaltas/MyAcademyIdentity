@@ -1,4 +1,4 @@
-# ✨MyAcademyIdentity📬
+# ✨My Identity App📬
 
 📬 Modern ve güvenli bir e-posta deneyimi ile kullanıcıların dijital iletişimi daha akıcı, güvenli ve organize bir şekilde yönetmesini sağlayan sıradışı bir platformdur. Hesap açma, oturum yönetimi, mesaj gönderme/alma, taslak kaydetme ve önemli mesajları öne çıkarma gibi tüm süreçler tek bir çatı altında sunulur.
 
